@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Add News{% endblock %}
+{% block page-content %}
+<h1 class='page-header'>Register</h1>
+<div class='post'>
+<form method='post'>
+    {% csrf_token %}
+    {{ user_form.as_p }}
+    <button type='submit' class='btn btn-primary'>提交</button>
+</form>
+</div>
+{% endblock %}
