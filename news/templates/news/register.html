@@ -2,12 +2,28 @@
 {% load staticfiles %}
 {% block title %}Add News{% endblock %}
 {% block page-content %}
-<h1 class='page-header'>Register</h1>
 <div class='post'>
-<form method='post'>
+<h2 class='page-header text-center'>Register</h2>
+
+<form method='post' class='form-horizontal'>
     {% csrf_token %}
-    {{ user_form.as_p }}
-    <button type='submit' class='btn btn-primary'>提交</button>
+    <div class="form-group">
+        <label for="id_username" class="col-sm-4 control-label">Username</label>
+        <div class="col-sm-7">
+            <input type="text" name='username' id="id_username" class="form-control" placeholder="用户名">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="id_password" class="col-sm-4 control-label">Password</label>
+        <div class="col-sm-7">
+            <input type="password" name='password' id="id_password" class="form-control" placeholder="密码">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-4 col-sm-3">
+            <button type='submit' class='btn btn-default'>提 交</button>
+        </div>
+    </div>
 </form>
 </div>
 {% endblock %}

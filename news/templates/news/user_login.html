@@ -1,10 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}Add News{% endblock %}
 {% block page-content %}
+<div class='post'>
 <h1 class='page-header'>Login</h1>
 <form method='post'>
-	{% csrf_token %}
-	{{ form.as_p }}
-	<button type='submit' class='btn btn-primary'>提交</button>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type='submit' class='btn btn-primary'>提交</button>
 </form>
+</div>
 {% endblock %}

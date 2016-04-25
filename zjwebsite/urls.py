@@ -18,13 +18,13 @@ from django.contrib import admin
 
 
 urlpatterns = [
-	url(r'^admin/', include(admin.site.urls)),
-	url(r'^news/', include('news.urls', namespace='news')),
-	url(r'^$', 'news.views.home', name='home'),
-	url(r'^login/$', 'news.views.user_login', name='login'),
-	url(r'^logout/$', 'news.views.user_logout', name='logout'),
-	url(r'^register/$', 'news.views.register', name='register'),
-	#url(r'^search/$', 'news.search', name='search'),
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'^news/', include('news.urls', namespace='news')),
+    url(r'^$', 'news.views.home', name='home'),
+    url(r'^login/$', 'news.views.user_login', name='login'),
+    url(r'^logout/$', 'news.views.user_logout', name='logout'),
+    url(r'^register/$', 'news.views.register', name='register'),
+    #url(r'^search/$', 'news.search', name='search'),
     url(r'^auth/username/check-username/$', 'news.views.username_check', name='username_check'),
 ]
 
