@@ -15,7 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from rest_framework import routers
 
+from news import views 
+
+router = routers.DefaultRouter()
+router.register(r'news', views.NewsViewSet)
+router.register(r'users', views.UserViewSet)
+router.register(r'categorys', views.UserViewSet)
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -26,5 +33,7 @@ urlpatterns = [
     url(r'^register/$', 'news.views.register', name='register'),
     #url(r'^search/$', 'news.search', name='search'),
     url(r'^auth/username/check-username/$', 'news.views.username_check', name='username_check'),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api-info/', include(router.urls)),
 ]
 

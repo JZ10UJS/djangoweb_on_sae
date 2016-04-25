@@ -10,7 +10,7 @@ class Category(models.Model):
     
 class News(models.Model):
     title = models.CharField(max_length=64)
-    auther = models.ForeignKey(User)
+    auther = models.ForeignKey(User, related_name='news')
     summary = models.CharField(max_length=256)
     content = models.TextField()
     views = models.IntegerField(default=0)
@@ -22,9 +22,3 @@ class News(models.Model):
         return self.title
         
 
-
-class UserFile(models.Model):
-    user = models.OneToOneField(User)
-    
-    def __unicode__(self):
-        return self.user.name

@@ -1,15 +1,17 @@
 # coding: utf-8
-
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
-from zjwebsite import settings
-from news.models import *
-from news.forms import *
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
-from django.contrib.auth.decorators import login_required 
-from bing_search import run_query
+from django.contrib.auth.decorators import login_required
+
+from rest_framework import viewsets
+
+from news.bing_search import run_query
+from news.models import *
+from news.forms import *
+from news.serializers import *
 
 
 def home(req):
@@ -118,3 +120,18 @@ def username_check(request):
         response['info'] = u'该用户名可以使用'
 
     return JsonResponse(response)
+
+
+# RESTful api
+
+class NewsViewSet(viewsets.ModelViewSet):
+    queryset = News.objects.all()
+    serializer_class = NewsSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class CategoryViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = CategorySerializer
