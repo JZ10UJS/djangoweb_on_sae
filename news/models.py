@@ -10,7 +10,7 @@ class Category(models.Model):
     
 class News(models.Model):
     title = models.CharField(max_length=64)
-    auther = models.ForeignKey(User, related_name='news')
+    author = models.ForeignKey(User, related_name='news')
     summary = models.CharField(max_length=256)
     content = models.TextField()
     views = models.IntegerField(default=0)

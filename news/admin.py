@@ -1,5 +1,11 @@
 from django.contrib import admin
 from news.models import *
 
-admin.site.register(Category)
-admin.site.register(News)
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+
+class NewsAdmin(admin.ModelAdmin):
+    list_display = ('title', 'pub_date')
+
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(News, NewsAdmin)

@@ -9,7 +9,7 @@ import re
 class AddPageForm(forms.ModelForm):
     class Meta:
         model = News
-        exclude = ('pub_date', 'update_date','views','auther')
+        exclude = ('pub_date', 'update_date','views','author')
         
 
 class RegisterForm(forms.ModelForm):

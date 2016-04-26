@@ -16,9 +16,8 @@ from news.serializers import *
 
 def home(req):
     username = 'ZJ'
-    user = req.user
     news_list = News.objects.all().order_by('-pub_date')[:10]
-    return render(req, 'news/home.html', {'username':username,'news_list':news_list, 'user':user})
+    return render(req, 'news/home.html', {'username':username,'news_list':news_list})
     
 
 def index(req):
@@ -34,10 +33,10 @@ def search(request):
             result_list = run_query(query)
     return render(request, 'news/search.html', {'news_list': result_list})    
 
-def auther_display(req, user_id):
-    username = get_object_or_404(User, id=user_id)
-    news_list = username.news_set.all()
-    return render(req,'news/auther_display.html', {'news_list':news_list,'username':username})
+def author_display(req, user_id):
+    user = get_object_or_404(User, id=user_id)
+    news_list = user.news.all()
+    return render(req,'news/author_display.html', {'news_list':news_list,'username':user})
 
 def display(req, category_name):
     category = get_object_or_404(Category, name=category_name.lower())
@@ -56,7 +55,7 @@ def add_news(req):
         form = AddPageForm(req.POST)
         if form.is_valid():
             news = form.save(commit=False)
-            news.auther = req.user
+            news.author = req.user
             news.save()
             return HttpResponseRedirect(reverse('home'))        
     else:
@@ -127,10 +126,15 @@ class NewsViewSet(viewsets.ModelViewSet):
     queryset = News.objects.all()
     serializer_class = NewsSerializer
 
-class UserViewSet(viewsets.ModelViewSet):
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
+
+
+class UserViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-class CategoryViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+
+class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Category.objects.all()
     serializer_class = CategorySerializer

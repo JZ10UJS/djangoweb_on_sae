@@ -29,15 +29,8 @@ class Migration(migrations.Migration):
                 ('views', models.IntegerField(default=0)),
                 ('pub_date', models.DateTimeField(auto_now_add=True)),
                 ('update_date', models.DateTimeField(auto_now=True)),
-                ('auther', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('author', models.ForeignKey(related_name='news', to=settings.AUTH_USER_MODEL)),
                 ('category', models.ForeignKey(to='news.Category')),
-            ],
-        ),
-        migrations.CreateModel(
-            name='UserFile',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

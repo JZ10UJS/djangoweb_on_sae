@@ -22,7 +22,7 @@ from news import views
 router = routers.DefaultRouter()
 router.register(r'news', views.NewsViewSet)
 router.register(r'users', views.UserViewSet)
-router.register(r'categorys', views.UserViewSet)
+router.register(r'categorys', views.CategoryViewSet)
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
