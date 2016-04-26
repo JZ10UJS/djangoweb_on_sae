@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
@@ -67,14 +67,13 @@ def add_news(req):
 def register(req):
     if req.method == 'POST':
         user_form = RegisterForm(data=req.POST)
+        print req.POST
         if user_form.is_valid():
             user = user_form.save(commit=False)
             user.set_password(user.password)
             user.save()
             return HttpResponseRedirect('/login/')
-    else:
-        user_form = RegisterForm()
-    return render(req, 'news/register.html', {'user_form':user_form})
+    return render(req, 'news/register.html')
     
 def user_login(req):
     if req.method == 'POST':

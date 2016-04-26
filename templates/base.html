@@ -8,6 +8,8 @@
     <link href="{% static 'css/monokai_sublime.min.css' %}" rel='stylesheet'>
     <link href="{% static 'favicon.ico' %}" rel='shortcut icon'>
     <link href="{% static 'css/screen.css' %}" rel='stylesheet'>
+    <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <title>{% block title %}ZJ-website{% endblock %}</title>
 </head>
 <body>
@@ -26,6 +28,7 @@
                     <li><a href="{% url 'news:display' 'django' %}">Django</a></li>
                     <li><a href="{% url 'news:display' 'html' %}">HTML</a></li>
                     <li><a href="{% url 'news:display' 'css' %}">CSS</a></li>
+                    <li><a href="/api-info/">RESTful API</a></li>
                 </ul>
             </li>
         </ul>
@@ -123,7 +126,6 @@
 <p><a href='#'>Contact</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href='#'>About</a></p>
 <hr/>
 </div>
-<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
+
 </body>
 </html>

@@ -5,25 +5,91 @@
 <div class='post'>
 <h2 class='page-header text-center'>Register</h2>
 
-<form method='post' class='form-horizontal'>
+<form class='form-horizontal' method='post'>
     {% csrf_token %}
-    <div class="form-group">
-        <label for="id_username" class="col-sm-4 control-label">Username</label>
-        <div class="col-sm-7">
-            <input type="text" name='username' id="id_username" class="form-control" placeholder="用户名">
+    <div class="form-group has-feedback" id='username-check'>
+        <label class="control-label col-sm-3" for="username">Username: </label>
+        <div class='col-sm-4'>
+            <input type="text" name='username' class="form-control" id="username" aria-describedby="username2Status" placeholder='请输入用户名...'>
+            <div id='un-icon'></div>
         </div>
+        <div class='control-label col-sm-5' id='u-help-text'></div>
+    </div>
+    <div class="form-group has-feedback" id='password-check1'>
+        <label class="control-label col-sm-3" for="password1">Password: </label>
+        <div class='col-sm-4'>
+            <input type="password" name='password' class="form-control" id="password1" aria-describedby="password12Status" placeholder='请输入密码...'>
+            <div class='pd-icon'></div>
+        </div>
+        <div class='control-label col-sm-5 pd-help-text'></div>
+    </div>
+    <div class="form-group has-feedback" id='password-check2'>
+        <label class="control-label col-sm-3" for="password2">Password: </label>
+        <div class='col-sm-4'>
+            <input type="password" class="form-control" id="password2" aria-describedby="password22Status" placeholder='请确认密码...'>
+            <div class='pd-icon'></div>
+        </div>
+        <div class='control-label col-sm-5 pd-help-text'></div>
     </div>
     <div class="form-group">
-        <label for="id_password" class="col-sm-4 control-label">Password</label>
-        <div class="col-sm-7">
-            <input type="password" name='password' id="id_password" class="form-control" placeholder="密码">
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-4 col-sm-3">
+        <div class="col-sm-offset-3 col-sm-3">
             <button type='submit' class='btn btn-default'>提 交</button>
         </div>
     </div>
 </form>
+<script>
+    $(document).ready(function(){
+        $('#username').bind({
+            blur:function(){
+                var usname = $('#username').val();
+                if( usname != ""){
+                    $.getJSON("{% url 'username_check' %}",{'username':usname}, function(ret){
+                        if(ret.is_allowed == false){
+                            $('#username-check').addClass('has-error');
+                            $('#un-icon').html('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" id="un"></span>');
+                        }else{
+                            $('#username-check').removeClass('has-error');
+                            $('#username-check').addClass('has-success');
+                            $('#un-icon').html('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" id="un"></span>');
+                        }
+                        $('#u-help-text').html('<p class="text-left">'+ret['info']+"</p>");
+                    }); 
+                }else{
+                    $('#username-check').addClass('has-error');
+                    $('#un-icon').html('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" id="un"></span>');
+                    $('#u-help-text').html('<p class="text-left">用户名不能为空</p>');
+                }
+            },
+            focus:function(){
+                $('#username-check').removeClass('has-success');
+                $('#un').remove();
+            }
+        });
+        $('#password2, #password1').bind({
+            focus:function(){
+                $('#password-check1').removeClass('has-success');
+                $('#password-check2').removeClass('has-success');
+                $('#password-check1').removeClass('has-error');
+                $('#password-check2').removeClass('has-error');
+                $('.pd-icon').empty();
+            },
+            blur:function(){
+                var psd1 = $('#password1').val();
+                var psd2 = $('#password2').val();
+                if((psd1 == psd2) && (psd1 != "")){
+                    $('#password-check1').addClass('has-success');
+                    $('#password-check2').addClass('has-success');
+                    $('.pd-icon').html('<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true" id="ps1"></span>');
+                    $('.pd-help-text').html('<p class="text-left">两次输入一致</p>');
+                }else{
+                    $('#password-check1').addClass('has-error');
+                    $('#password-check2').addClass('has-error');
+                    $('.pd-icon').html('<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true" id="ps1"></span>');
+                    $('.pd-help-text').html('<p class="text-left">两次输入不一致</p>');
+                }
+            }
+        });
+    });
+</script>
 </div>
 {% endblock %}
