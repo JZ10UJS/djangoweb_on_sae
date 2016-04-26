@@ -2,8 +2,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.urlresolvers import reverse
+from django.core.paginator import Paginator
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
 from rest_framework import viewsets
@@ -15,13 +16,19 @@ from news.serializers import *
 
 
 def home(req):
-    username = 'ZJ'
-    news_list = News.objects.all().order_by('-pub_date')[:10]
-    return render(req, 'news/home.html', {'username':username,'news_list':news_list})
-    
+    news_set = News.objects.all().order_by('-pub_date')
+    paginator = Paginator(news_set, 10)
 
-def index(req):
-    pass
+    page = req.GET.get('page')
+    try:
+        current_page = paginator.page(page)
+    except PageNotAnInteger:
+        current_page = paginator.page(1)
+    except EmptyPage:
+        current_page = paginator.page(paginator.num_pages)
+
+    return render(req, 'news/home.html', {'news_list': current_page})
+    
 
 def search(request):
     result_list = []
@@ -33,10 +40,12 @@ def search(request):
             result_list = run_query(query)
     return render(request, 'news/search.html', {'news_list': result_list})    
 
+
 def author_display(req, user_id):
     user = get_object_or_404(User, id=user_id)
     news_list = user.news.all()
     return render(req,'news/author_display.html', {'news_list':news_list,'username':user})
+
 
 def display(req, category_name):
     category = get_object_or_404(Category, name=category_name.lower())
@@ -49,6 +58,7 @@ def detail(req, category_name, news_id):
     news = category.news_set.get(id=news_id)
     return render(req, 'news/detail.html', {'news':news})
     
+
 @login_required
 def add_news(req):
     if req.method == 'POST':
@@ -74,6 +84,7 @@ def register(req):
             return HttpResponseRedirect('/login/')
     return render(req, 'news/register.html')
     
+
 def user_login(req):
     if req.method == 'POST':
         username = req.POST.get('username')
@@ -90,6 +101,7 @@ def user_login(req):
     else:
         form = RegisterForm()
     return render(req, 'news/login.html', {'form':form})
+
 
 @login_required    
 def user_logout(req):

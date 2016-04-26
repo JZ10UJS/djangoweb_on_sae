@@ -7,6 +7,7 @@
 </div>
 {% endblock %}
 {% block page-content %}
+
 {% for news in news_list %}
     <article class='post tag-laravel-5-1 tag-xin-ban-ben-fa-bu'>
         <div class="post-head">
@@ -22,4 +23,21 @@
         </div>
     </article>
 {% endfor %}
+<div class='post'>
+    <div class="pagination">
+        <span class="step-links">
+            {% if news_list.has_previous %}
+                <a href="?page={{ news_list.previous_page_number }}" class='btn btn-default'>previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ news_list.number }} of {{ news_list.paginator.num_pages }}.
+            </span>
+
+            {% if news_list.has_next %}
+                <a href="?page={{ news_list.next_page_number }}" class='btn btn-default'>next</a>
+            {% endif %}
+        </span>
+    </div>
+</div>
 {% endblock %}
