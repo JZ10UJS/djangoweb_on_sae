@@ -2,66 +2,92 @@
 # coding: utf-8
 
 """
-主要是当启动项目是，自动抓取一些新闻，
+主要是当启动项目时，自动抓取一些新闻，
 并通过RESTful API写入到数据库中
 """
 
 import requests
+import threading
+from Queue import Queue
 from BeautifulSoup import BeautifulSoup as BS
 
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
     
 }
-urls = (
-    'http://internet.baidu.com',
-)
+urls = [
+    'http://www.huxiu.com/whatsnew.html?f=nav_article_whatsnew',
+]
 
 # 调用RESTful API的用户名和密码
 AUTH = ('root', 'zhangjie123')
 
 
-def parse_base_url(url):
-    ss = requests.session()
-    ss.headers.update(HEADERS)
-    rsp = ss.get(url)
-    rsp.encoding = rsp.apparent_encoding
-    datas = []
+class HomePageHander(object):
+    def __init__(self, base_url, queue):
+        self.url = base_url
+        self.queue = queue
 
-    if rsp.ok:
-        print'get home page success!'
+    def get_data(self):
+        print 'start run'
+        ss = requests.session()
+        ss.headers.update(HEADERS)
+        rsp = ss.get(self.url)
+        rsp.encoding = rsp.apparent_encoding
+        datas = []
+
+        if rsp.ok:
+            print'get home page success!'
+            soup = BS(rsp.text)
+            div_tags = soup.findAll('div', attrs={'class': 'mob-ctt'})
+            map(self.queue.put, div_tags)
+            
+            for i in range(5):
+                a = DetailHander(self.queue, datas)
+                a.setDaemon(True)
+                a.start()
+            
+        self.queue.join()
+        return datas
+
+
+class DetailHander(threading.Thread):
+    def __init__(self, tag_queue, datas):
+        super(DetailHander, self).__init__()
+        self.queue = tag_queue
+        self.datas = datas
+
+    def parse_detail_url(self, url):
+        ss = requests.session()
+        ss.headers.update(HEADERS)
+        rsp = ss.get(url)
+        rsp.encoding = rsp.apparent_encoding
+
         soup = BS(rsp.text)
-        div_tags = soup.findAll('div', attrs={'class': 'mod-column'})
-        for div_tag in div_tags:
-            content_tag = div_tag.h2
+        content_tag = soup.find('div', attrs={'id':'article_content'})
+        p_tags = content_tag.findAll('p')
+        res = [p_tag.text for p_tag in p_tags]
+        return '\n\n'.join(res)
+        
+    def run(self):
+        while not self.queue.empty():
+            self.tag = self.queue.get()
+            content_tag = self.tag.h3
             title = content_tag.text
             detail_url = content_tag.a.get('href')
-            summary = div_tag.p.text
-            print'get detail page %s' % detail_url
-            content = parse_detail_url(detail_url)
-            datas.append({'title': title, 
+            summary = self.tag.find('div', attrs={'class':'mob-sub'})
+            print'get detail page %s by %s' % (detail_url, self.name)
+            content = self.parse_detail_url('http://www.huxiu.com'+ detail_url)
+            self.datas.append({'title': title, 
                           'summary': summary,
                           'content': content})
-
-    return datas
-
-
-def parse_detail_url(url):
-    ss = requests.session()
-    ss.headers.update(HEADERS)
-    rsp = ss.get(url)
-    rsp.encoding = rsp.apparent_encoding
-
-    soup = BS(rsp.text)
-    content_tag = soup.find('div', attrs={'class':'article-detail'})
-    p_tags = content_tag.findAll('p', attrs={'class':'text'})
-    res = [p_tag.text for p_tag in p_tags]
-    return '\n\n'.join(res)
-
+            self.queue.task_done()
 
 
 def main():
-    datas = parse_base_url(urls[0])
+    queue = Queue()
+    t = HomePageHander(urls[0], queue)
+    datas = t.get_data()
     print 'datas get success!'
 
     ss = requests.session()
@@ -79,6 +105,7 @@ def main():
             print rsp.content
 
 
-
 if __name__ == '__main__':
     main()
+    
+        

@@ -14,25 +14,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 import os
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-import os.path 
 
-from os import environ
-debug = not environ.get("APP_NAME", "") 
-if debug:
-    MYSQL_DB = 'zjwebsite'    
-    MYSQL_USER = 'root' 
-    MYSQL_PASS = 'python' 
-    MYSQL_HOST_M = '127.0.0.1' 
-    MYSQL_HOST_S = '127.0.0.1' 
-    MYSQL_PORT = '3306' 
-else: 
-    import sae.const
-    MYSQL_DB = sae.const.MYSQL_DB 
-    MYSQL_USER = sae.const.MYSQL_USER 
-    MYSQL_PASS = sae.const.MYSQL_PASS 
-    MYSQL_HOST_M = sae.const.MYSQL_HOST 
-    MYSQL_HOST_S = sae.const.MYSQL_HOST_S 
-    MYSQL_PORT = sae.const.MYSQL_PORT
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
@@ -101,6 +83,23 @@ WSGI_APPLICATION = 'zjwebsite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
+on_sae = os.environ.get("APP_NAME", "") 
+if not on_sae:
+    MYSQL_DB = 'zjwebsite'    
+    MYSQL_USER = 'root' 
+    MYSQL_PASS = 'python' 
+    MYSQL_HOST_M = '127.0.0.1' 
+    MYSQL_HOST_S = '127.0.0.1' 
+    MYSQL_PORT = '3306' 
+else: 
+    import sae.const
+    MYSQL_DB = sae.const.MYSQL_DB 
+    MYSQL_USER = sae.const.MYSQL_USER 
+    MYSQL_PASS = sae.const.MYSQL_PASS 
+    MYSQL_HOST_M = sae.const.MYSQL_HOST 
+    MYSQL_HOST_S = sae.const.MYSQL_HOST_S 
+    MYSQL_PORT = sae.const.MYSQL_PORT
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
@@ -134,6 +133,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+
+# rest_framework
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
