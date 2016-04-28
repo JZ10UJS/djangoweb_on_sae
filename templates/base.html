@@ -18,16 +18,16 @@
             <a class="navbar-brand" href="/">HOME</a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a href="{% url 'news:display' 'politics' %}">Politics</a></li>
-            <li><a href="{% url 'news:display' 'gossip' %}">Gossip</a></li>
-            <li><a href="{% url 'news:display' 'novelty' %}">Novelty</a></li>
+            <li><a href="{% url 'news:display' 'Politics' %}">Politics</a></li>
+            <li><a href="{% url 'news:display' 'Gossip' %}">Gossip</a></li>
+            <li><a href="{% url 'news:display' 'Novelty' %}">Novelty</a></li>
             <li class="">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">Others <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="{% url 'news:display' 'python' %}">Python</a></li>
-                    <li><a href="{% url 'news:display' 'django' %}">Django</a></li>
-                    <li><a href="{% url 'news:display' 'html' %}">HTML</a></li>
-                    <li><a href="{% url 'news:display' 'css' %}">CSS</a></li>
+                    <li><a href="{% url 'news:display' 'Python' %}">Python</a></li>
+                    <li><a href="{% url 'news:display' 'Django' %}">Django</a></li>
+                    <li><a href="{% url 'news:display' 'HTML' %}">HTML</a></li>
+                    <li><a href="{% url 'news:display' 'CSS' %}">CSS</a></li>
                     <li><a href="/api-info/">RESTful API</a></li>
                 </ul>
             </li>
@@ -49,33 +49,31 @@
         {% endblock %}
     </div>
     <div class='col-sm-3 sidebar'>
-        <div style=''>
-            <div class='widget'>
-                <h4 class='title'>功能</h4>
-                <div class='content'>
-                {% if user.is_authenticated %}
-                    <h2>Hi, {{user}}</h2>
-                    <a href="{% url 'news:add_news'%}" class='btn btn-default'>Add news</a>
-                    <a href="{% url 'logout' %}" class='btn btn-default'>Log Out</a>
-                {% else %}
-                    <button class="btn btn-default" data-toggle="modal" data-target="#myModal">
-                    Log In
-                    </button>
-                    <a class='btn btn-default' href='{% url "register" %}'>Sign up</a>
-                {% endif %}
-                <h3>{{ request.MEAT.REMOTE_ADDR }}
-                </div>
+        <div class='widget'>
+            <h4 class='title'>功能</h4>
+            <div class='content'>
+            {% if user.is_authenticated %}
+                <h2>Hi, {{user}}</h2>
+                <a href="{% url 'news:add_news'%}" class='btn btn-default'>Add news</a>
+                <a href="{% url 'logout' %}" class='btn btn-default'>Log Out</a>
+            {% else %}
+                <button class="btn btn-default" data-toggle="modal" data-target="#myModal">
+                Log In
+                </button>
+                <a class='btn btn-default' href='{% url "register" %}'>Sign up</a>
+            {% endif %}
+            <h3>{{ request.MEAT.REMOTE_ADDR }}
             </div>
-            <div class="widget">
-                <h4 class="title">标题</h4>
-                <div class="content">
-                    <a href="#" class="btn btn-default btn-block" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载 Laravel &amp; Lumen'])">不知道</a>
-                    <a href="#" class="btn btn-default btn-block" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载 Laravel &amp; Lumen'])">放什么</a>
-                    <a href="#" class="btn btn-default btn-block" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载 Laravel &amp; Lumen'])">但是要</a>
-                    <a href="#" class="btn btn-default btn-block" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载 Laravel &amp; Lumen'])">看起来</a>
-                    <a href="#" class="btn btn-default btn-block" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载 Laravel &amp; Lumen'])">很牛逼</a>
-                    <a href="#" class="btn btn-default btn-block" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载 Laravel &amp; Lumen'])">的样子</a>
-                </div>
+        </div>
+        <div class="widget">
+            <h4 class="title">标题</h4>
+            <div class="content">
+                <a href="#" class="btn btn-default btn-block" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载 Laravel &amp; Lumen'])">不知道</a>
+                <a href="#" class="btn btn-default btn-block" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载 Laravel &amp; Lumen'])">放什么</a>
+                <a href="#" class="btn btn-default btn-block" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载 Laravel &amp; Lumen'])">但是要</a>
+                <a href="#" class="btn btn-default btn-block" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载 Laravel &amp; Lumen'])">看起来</a>
+                <a href="#" class="btn btn-default btn-block" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载 Laravel &amp; Lumen'])">很牛逼</a>
+                <a href="#" class="btn btn-default btn-block" onclick="_hmt.push(['_trackEvent', 'big-button', 'click', '下载 Laravel &amp; Lumen'])">的样子</a>
             </div>
         </div>
     </div>

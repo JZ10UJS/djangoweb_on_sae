@@ -8,6 +8,7 @@
 
 import requests
 import threading
+import json
 from Queue import Queue
 from BeautifulSoup import BeautifulSoup as BS
 
@@ -40,7 +41,7 @@ class HomePageHander(object):
             print'get home page success!'
             soup = BS(rsp.text)
             div_tags = soup.findAll('div', attrs={'class': 'mob-ctt'})
-            map(self.queue.put, div_tags)
+            map(self.queue.put, div_tags[:10])
             
             for i in range(5):
                 a = DetailHander(self.queue, datas)
@@ -92,6 +93,16 @@ def main():
 
     ss = requests.session()
     ss.auth = AUTH
+
+    # 先判定是已经有categorys, 若没有就新建，主要是数据库初始化的时候。
+    url = 'http://127.0.0.1:8000/api-info/categorys.json/'
+    rsp = ss.get(url)
+    category_datas = json.loads(rsp.text)
+
+    if category_datas['count'] == 0:
+        for category in ['Politics','Gossip','Novelty','Python','Django','HTML','CSS']:
+            rsp == ss.post(url, data={'name':category})
+
     url = 'http://127.0.0.1:8000/api-info/news.json/'
 
     for data in datas:

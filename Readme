@@ -1,4 +1,4 @@
 基本的注册，登录功能，登录后支持自己新建News，但添加界面极丑；
 调用BingSearch API接口，但尚不支持搜索本站内容；
-提供RESTful API接口，需root用户才能查看，普通注册用户不支持；
+提供RESTful API接口，需 user.is_staff==True 才能查看，普通注册用户不支持；
 新增news/news_spider.py 手动调用抓取虎嗅的网页新闻，并通过API接口直接上传到db中。； //待完善

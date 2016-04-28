@@ -48,7 +48,7 @@ def author_display(req, user_id):
 
 
 def display(req, category_name):
-    category = get_object_or_404(Category, name=category_name.lower())
+    category = get_object_or_404(Category, name=category_name)
     news_list = category.news_set.all().order_by('-pub_date')[:5]
     return render(req, 'news/display.html', {'category':category,'news_list':news_list})
 
@@ -147,6 +147,6 @@ class UserViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = UserSerializer
 
 
-class CategoryViewSet(viewsets.ReadOnlyModelViewSet):
+class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
