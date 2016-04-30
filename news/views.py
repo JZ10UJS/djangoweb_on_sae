@@ -13,6 +13,7 @@ from news.bing_search import run_query
 from news.models import *
 from news.forms import *
 from news.serializers import *
+from news.news_spider import main as spider_main
 
 
 def home(req):
@@ -64,9 +65,9 @@ def add_news(req):
     if req.method == 'POST':
         form = AddPageForm(req.POST)
         if form.is_valid():
-            news = form.save(commit=False)
-            news.author = req.user
-            news.save()
+            website = form.cleaned_data.get('info_from')
+            info_nums = form.cleaned_data.get('info_nums')
+            spider_main(website, info_nums)
             return HttpResponseRedirect(reverse('home'))        
     else:
         form = AddPageForm()

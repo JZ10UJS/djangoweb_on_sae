@@ -6,10 +6,13 @@ from django.utils.translation import ugettext_lazy as _
 import re
 
 
-class AddPageForm(forms.ModelForm):
-    class Meta:
-        model = News
-        exclude = ('pub_date', 'update_date','views','author')
+class AddPageForm(forms.Form):
+    CHOICE = (
+        ('HX', u'虎嗅'),
+    )
+    info_from = forms.ChoiceField(choices=CHOICE)
+    info_nums = forms.IntegerField(initial=10)
+
         
 
 class RegisterForm(forms.ModelForm):

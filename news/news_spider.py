@@ -25,9 +25,10 @@ AUTH = ('root', 'zhangjie123')
 
 
 class HomePageHander(object):
-    def __init__(self, base_url, queue):
+    def __init__(self, base_url, queue, nums):
         self.url = base_url
         self.queue = queue
+        self.nums = nums
 
     def get_data(self):
         print 'start run'
@@ -41,7 +42,7 @@ class HomePageHander(object):
             print'get home page success!'
             soup = BS(rsp.text)
             div_tags = soup.findAll('div', attrs={'class': 'mob-ctt'})
-            map(self.queue.put, div_tags[:10])
+            map(self.queue.put, div_tags[:self.nums])
             
             for i in range(5):
                 a = DetailHander(self.queue, datas)
@@ -85,9 +86,9 @@ class DetailHander(threading.Thread):
             self.queue.task_done()
 
 
-def main():
+def main(url, nums=10):
     queue = Queue()
-    t = HomePageHander(urls[0], queue)
+    t = HomePageHander(urls[0], queue, nums)
     datas = t.get_data()
     print 'datas get success!'
 
@@ -117,6 +118,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(url)
     
         
