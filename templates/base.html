@@ -18,19 +18,10 @@
             <a class="navbar-brand" href="/">HOME</a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a href="{% url 'news:display' 'Politics' %}">Politics</a></li>
-            <li><a href="{% url 'news:display' 'Gossip' %}">Gossip</a></li>
-            <li><a href="{% url 'news:display' 'Novelty' %}">Novelty</a></li>
-            <li class="">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">Others <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                    <li><a href="{% url 'news:display' 'Python' %}">Python</a></li>
-                    <li><a href="{% url 'news:display' 'Django' %}">Django</a></li>
-                    <li><a href="{% url 'news:display' 'HTML' %}">HTML</a></li>
-                    <li><a href="{% url 'news:display' 'CSS' %}">CSS</a></li>
-                    <li><a href="/api-info/">RESTful API</a></li>
-                </ul>
-            </li>
+        {% for category in nav_display_columns %}
+            <li><a href="{{ category.get_absolute_url }}">{{ category.name }}</a></li>
+        {% endfor %}
+            <li><a href="/api-info/">RESTful API</a></li>
         </ul>
         <form class="navbar-form pull-right" role="search" method='GET' action='/news/search'>
             <div class="input-group">

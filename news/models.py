@@ -1,11 +1,17 @@
+# coding: utf-8
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.contrib.auth.models import User
 
 class Category(models.Model):
     name = models.CharField(max_length=32)
+    nav_display = models.BooleanField(u'导航显示', default=True)
     
     def __unicode__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('news:display', args=(self.name,))
         
     
 class News(models.Model):

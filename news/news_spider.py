@@ -66,9 +66,13 @@ class DetailHander(threading.Thread):
         rsp.encoding = rsp.apparent_encoding
 
         soup = BS(rsp.text)
+        res = []
+        #跨域图片虎嗅403了
+        #img_tag = soup.find('div', attrs={'class': 'article-img-box'})
+        #res.append("<img src='%s'>" % img_tag.img.get('src'))
         content_tag = soup.find('div', attrs={'id':'article_content'})
         p_tags = content_tag.findAll('p')
-        res = [p_tag.text for p_tag in p_tags]
+        res.extend([p_tag.text for p_tag in p_tags])
         return '\n\n'.join(res)
         
     def run(self):
@@ -118,6 +122,6 @@ def main(url, nums=10):
 
 
 if __name__ == '__main__':
-    main(url)
+    main(urls[0])
     
         
