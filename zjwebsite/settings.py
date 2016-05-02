@@ -1,3 +1,4 @@
+# coding: utf-8
 """
 Django settings for zjwebsite project.
 
@@ -25,10 +26,13 @@ SECRET_KEY = '^a9e6vhn@s2*f499es$pji4^%df%-wy^a$ilh#hw09kdgoh20^'
 # SECURITY WARNING: don't run with debug turned on in production!
 import socket
 
+"""
 if socket.gethostname() == 'ZHJ-PC':
     DEBUG = True
 else:
     DEBUG = False
+"""
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -72,7 +76,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'news.nav_processor.nav_column',
+                'news.nav_processor.nav_column', # 为了将导航添加到所有的context中
             ],
         },
     },
