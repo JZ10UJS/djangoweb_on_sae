@@ -9,6 +9,6 @@
                 <time class="post-date">{{news.pub_date|date:"Y-m-d H:i:s"}}</time>
             </div>
         </div>
-        <div class="post-content"><p>{{ news.content|linebreaks }}</p></div>
+        <div class="post-content"><p>{{ news.content|safe|linebreaks}}</p></div>
     </article>
 {% endblock %}

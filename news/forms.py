@@ -10,8 +10,8 @@ class AddPageForm(forms.Form):
     CHOICE = (
         ('HX', u'虎嗅'),
     )
-    info_from = forms.ChoiceField(choices=CHOICE)
-    info_nums = forms.IntegerField(initial=10)
+    info_from = forms.ChoiceField(required=True, choices=CHOICE)
+    info_nums = forms.IntegerField(required=True, initial=10)
 
         
 

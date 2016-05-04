@@ -35,5 +35,13 @@ urlpatterns = [
     url(r'^auth/username/check-username/$', 'news.views.username_check', name='username_check'),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api-info/', include(router.urls)),
+    url(r'^ueditor/',include('DjangoUeditor.urls' )),
 ]
 
+from django.conf import settings
+
+if settings.DEBUG:
+    from django.conf.urls.static import static
+    urlpatterns += static(
+            settings.MEDIA_URL, document_root=settings.MEDIA_ROOT
+        )

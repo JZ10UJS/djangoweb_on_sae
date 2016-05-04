@@ -67,8 +67,9 @@ def add_news(req):
         if form.is_valid():
             website = form.cleaned_data.get('info_from')
             info_nums = form.cleaned_data.get('info_nums')
+            # 这个耗时太长了
             spider_main(website, info_nums)
-            return HttpResponseRedirect(reverse('home'))        
+            return HttpResponseRedirect(reverse('home'))              
     else:
         form = AddPageForm()
     return render(req, 'news/add_news.html', {'form':form})
