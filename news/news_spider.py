@@ -16,9 +16,9 @@ HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/44.0.2403.157 Safari/537.36',
     
 }
-urls = [
-    'http://www.huxiu.com/whatsnew.html?f=nav_article_whatsnew',
-]
+URLS = {
+    'HX':'http://www.huxiu.com/whatsnew.html?f=nav_article_whatsnew',
+}
 
 # 调用RESTful API的用户名和密码
 AUTH = ('root', 'zhangjie123')
@@ -134,13 +134,14 @@ class PostHandler(threading.Thread):
     
 
 
-def main():
-    a = HomePageHandler(urls[0])
+def main(website_name, info_num=10):
+    a = HomePageHandler(URLS[website_name], info_num)
     a.go()
+
 
 if __name__ == '__main__':
     s = time.time()
-    main()
+    main(URLS['HX'])
     e = time.time()
     print 'using ', e-s
     

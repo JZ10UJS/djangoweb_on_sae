@@ -2,3 +2,5 @@
 调用BingSearch API接口，但尚不支持搜索本站内容；
 提供RESTful API接口，需 user.is_staff==True 才能查看，普通注册用户不支持；
 新增news/news_spider.py 手动调用抓取虎嗅的网页新闻，并通过API接口直接上传到db中。； //待完善
+通过celery 和 redis 对news_spider异步调用，优化用户体验
+继承DjangoUeditor

@@ -13,8 +13,7 @@ from news.bing_search import run_query
 from news.models import *
 from news.forms import *
 from news.serializers import *
-from news.news_spider import main as spider_main
-
+from news.tasks import crawl_news_task
 
 def home(req):
     news_set = News.objects.all().order_by('-pub_date')
@@ -65,10 +64,11 @@ def add_news(req):
     if req.method == 'POST':
         form = AddPageForm(req.POST)
         if form.is_valid():
-            website = form.cleaned_data.get('info_from')
+            website_name = form.cleaned_data.get('info_from')
             info_nums = form.cleaned_data.get('info_nums')
-            # 这个耗时太长了
-            spider_main(website, info_nums)
+            print website_name, info_nums
+            # celery 异步
+            crawl_news_task.delay(website_name, info_nums)
             return HttpResponseRedirect(reverse('home'))              
     else:
         form = AddPageForm()
