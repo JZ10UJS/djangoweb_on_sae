@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api-info/', include(router.urls)),
     url(r'^ueditor/',include('DjangoUeditor.urls' )),
+    url(r'^search/', include('haystack.urls')),
 ]
 
 from django.conf import settings

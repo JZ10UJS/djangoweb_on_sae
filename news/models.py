@@ -31,6 +31,11 @@ class News(models.Model):
     def __unicode__(self):
         return self.title
 
+    def get_absolute_url(self):
+        return reverse('news:detail', 
+                        kwargs={'news_id':self.pk, 
+                                'category_name':self.category.name})
+
     class Meta:
         ordering = ['-id']
         

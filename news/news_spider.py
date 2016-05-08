@@ -4,6 +4,8 @@
 """
 主要是当启动项目时，自动抓取一些新闻，
 并通过RESTful API写入到数据库中
+这多线程还没有从头到尾直接写来得快。。
+耗时24s左右，所以要用celery redis 异步调用
 """
 
 import time
@@ -52,7 +54,7 @@ class HomePageHandler(object):
             # 依次取出链接放入self.a_link_queue中
             map(self.a_link_queue.put, (domain + div.a.get('href') for div in div_tags))
 
-            for i in range(5):
+            for i in range(10):
                 a = DetailHandler(self.a_link_queue, self.data_queue)
                 a.setDaemon(True)
                 a.start()
@@ -141,7 +143,7 @@ def main(website_name, info_num=10):
 
 if __name__ == '__main__':
     s = time.time()
-    main(URLS['HX'])
+    main('HX')
     e = time.time()
     print 'using ', e-s
     
